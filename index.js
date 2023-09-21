@@ -1,7 +1,8 @@
-const express = require('express')
+import express from "express"
+import cors from "cors"
+import router from "./Routes/index.js"
 const app = express()
-const cors = require('cors')
-const port = 8000
+const port = 3000
 
 app.use(express.json())
 app.use(cors());
@@ -21,38 +22,48 @@ const users = [
 ]
 
 const PlaceOrder = [
-
+  
 ]
+app.use('/',(req,res,next)=>{
+    if(req.query.apiKey === '12345'){
 
-app.get('/users', (req, res) => {
-  res.send(users)
+      next()
+    }else{
+      res.status(404).send({"message" : "api key not match"})
+    }
 })
+app.use('/api',router)
 
-app.post("/user",(req,res)=>{
-  users.push({id : users.length + 1 , ...req.body})
-    res.send({message : "user add successfuly"})
-})
+// app.get('/users', (req, res) => {
+//   res.send(users)
+// })
 
-app.put("/updateuser/:id",(req,res)=>{
-  const index = users.findIndex((v)=> v.id === Number(req.params.id))
-  users.splice(index,1,req.body)
-  res.send({message : "user updated"})
-})
-app.delete("/deleteuser/:id",(req,res)=>{
+// app.post("/user",(req,res)=>{
+//   users.push({id : users.length + 1 , ...req.body})
+//     res.send({message : "user add successfuly"})
+// })
 
-  const index = users.findIndex((v)=> v.id === Number(req.params.id))
-  users.splice(index,1)
-  res.send({message : "user Delted successfuly"})
+// app.put("/updateuser/:id",(req,res)=>{
+//   const index = users.findIndex((v)=> v.id === Number(req.params.id))
+//   users.splice(index,1,req.body)
+//   res.send({message : "user updated"})
+// })
+// app.delete("/deleteuser/:id",(req,res)=>{
+
+//   const index = users.findIndex((v)=> v.id === Number(req.params.id))
+//   users.splice(index,1)
+//   res.send({message : "user Delted successfuly"})
   
 
-})
+// })
 
 
-app.post("/placeorder",(req,res)=>{
-    console.log(req.body)
-  PlaceOrder.push(req.body)
-  res.send({message : "order placed successfly"})
-})
+// app.post("/placeorder",(req,res)=>{
+//     console.log(req.body)
+//   PlaceOrder.push(req.body)
+//   res.send({message : "order placed successfly"})
+// })
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
