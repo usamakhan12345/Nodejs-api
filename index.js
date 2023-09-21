@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import router from "./Routes/index.js"
 const app = express()
-const port = 3000
+const PORT = process.env.PORT ||  3000
 
 app.use(express.json())
 app.use(cors());
@@ -64,6 +64,6 @@ app.use('/api',router)
 //   res.send({message : "order placed successfly"})
 // })
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`Example app listening on port ${port}`)
 })
