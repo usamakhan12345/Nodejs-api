@@ -1,11 +1,16 @@
 import express from "express"
 import cors from "cors"
 import router from "./Routes/index.js"
+import connectDb from "./db/index.js"
+import user from "./models/index.js"
 const app = express()
-const PORT = process.env.PORT ||  3000
+const PORT =  3000
 
 app.use(express.json())
 app.use(cors());
+
+connectDb()
+
 const users = [
     {
         id : 1,
@@ -24,14 +29,15 @@ const users = [
 const PlaceOrder = [
   
 ]
-app.use('/',(req,res,next)=>{
-    if(req.query.apiKey === '12345'){
+// app.use('/',(req,res,next)=>{
+//     // console.log(req.query.apiKey)
+//     if(req.query.apiKey === '12345'){
 
-      next()
-    }else{
-      res.status(404).send({"message" : "api key not match"})
-    }
-})
+//       next()
+//     }else{
+//       res.status(404).send({"message" : "api key not match"})
+//     }
+// })
 app.use('/api',router)
 
 // app.get('/users', (req, res) => {
@@ -64,6 +70,9 @@ app.use('/api',router)
 //   res.send({message : "order placed successfly"})
 // })
 
+
+
+
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port ${PORT}`)
 })
