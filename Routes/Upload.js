@@ -1,8 +1,16 @@
 import express from "express"
 const router = express.Router()
+import fs from "fs-extra"
 
 import multer from "multer"
-
+import cloudinary from 'cloudinary';
+          
+          
+cloudinary.config({ 
+  cloud_name: 'dnzgzlxxy', 
+  api_key: '731957682875596', 
+  api_secret: 'DqETxXSmCfkIwd23LBmfAaR-hhw' 
+});
 
 // const upload = multer({ dest: 'Images/' })
 const storage = multer.diskStorage({
@@ -10,7 +18,7 @@ const storage = multer.diskStorage({
       cb(null, 'Images/')
     },
     filename: function (req, file, cb) {
-      
+        // console.log(file)
       cb(null, file.originalname);
     }
   })
@@ -20,7 +28,22 @@ const storage = multer.diskStorage({
 
 
 router.post('/',upload.single('file'),(req,res)=>{
-            res.status(200).send({"message" : "file uploaded"})
+
+  fs.readdirSync("Images/").forEach(file => {
+    console.log(file)
+    cloudinary.v2.uploader.upload(`Images/${file}`, {}, (error, result)=>{
+      console.log(result, error);
+      if(error){
+        return res.status(404).send({'message': "invalid data"})
+      }
+      fs.remove(`Images/${file}`, err => {
+        if (err) return console.error(err)
+        console.log('success!')
+      res.status(200).send({"message" : "file uploaded","url" :result.url})
+      })
+    });
+    
+  });
 })
 
 export default router

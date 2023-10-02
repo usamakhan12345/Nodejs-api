@@ -20,6 +20,7 @@ const userSchema = new Schema({
         type : String,
         required : true
     }
+    
 })
 
 const  user = mongoose.model('users',userSchema)
