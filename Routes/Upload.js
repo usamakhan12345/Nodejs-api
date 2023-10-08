@@ -30,9 +30,9 @@ const storage = multer.diskStorage({
 router.post('/',upload.single('file'),(req,res)=>{
 
   fs.readdirSync("Images/").forEach(file => {
-    console.log(file)
+    // console.log(file)
     cloudinary.v2.uploader.upload(`Images/${file}`, {}, (error, result)=>{
-      console.log(result, error);
+      console.log("linew no 35",result, error);
       if(error){
         return res.status(404).send({'message': "invalid data"})
       }

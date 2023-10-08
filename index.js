@@ -4,7 +4,7 @@ import router from "./Routes/index.js"
 import connectDb from "./db/index.js"
 import user from "./models/index.js"
 const app = express()
-const PORT =  3000
+const PORT =  8000
 
 app.use(express.json())
 app.use(cors());
